@@ -1,20 +1,14 @@
+// middleware.ts or src/middleware.ts
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-
 const isProtectedRoute = createRouteMatcher([
-'/'
-]);
-
-const isPublicRoute = createRouteMatcher([
-'/api/uploadthing'
+  "/servers/:id*"
 ]);
 
 export default clerkMiddleware((auth, req) => {
-if (isProtectedRoute(req)) auth().protect();
-//if (isPublicRoute(req)) auth().public();
-
+  console.log(`Middleware invoked for: ${req.url}`);
+  if (isProtectedRoute(req)) {
+    console.log("Protected route accessed");
+    auth().protect();
+  }
 });
-
-export const config = {
-  matcher: ["/((?!.*\..*|_next).*)", "/", "/(api|trpc)(.*)"],
-};
