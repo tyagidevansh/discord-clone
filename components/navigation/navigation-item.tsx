@@ -18,7 +18,10 @@ export const NavigationItem = ({
 }: NavigationItemProps) => {
     const pathname = usePathname();
     const router = useRouter();
-    const serverId = pathname.split('/').pop(); 
+
+    // Extract the serverId from the URL
+    const pathParts = pathname.split('/');
+    const serverId = pathParts.includes('servers') ? pathParts[pathParts.indexOf('servers') + 1] : '';
 
     const onClick = () => {
         router.push(`/servers/${id}`);
