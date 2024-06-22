@@ -29,7 +29,7 @@ export default async function handler(
     }
 
     if (!content) {
-      return res.status(500).json({ error: "Cotent missing"});
+      return res.status(500).json({ error: "Content missing" });
     }
 
     const server = await db.server.findFirst({
@@ -58,7 +58,7 @@ export default async function handler(
     });
 
     if (!channel) {
-      return res.status(404).json({message: "Channel not found"});
+      return res.status(404).json({ message: "Channel not found" });
     }
 
     const member = server.members.find((member) => member.profileId === profile.id);
@@ -85,10 +85,17 @@ export default async function handler(
 
     const channelKey = `chat:${channelId}:messages`;
 
-    res?.socket?.server?.io?.emit(channelKey, message);
+    console.log(`Emitting message to channelKey: ${channelKey}`);
+    try {
+      res?.socket?.server?.io?.emit(channelKey, message);
+      console.log("Message emitted successfully");
+    } catch (emitError) {
+      console.error("Error emitting message: ", emitError);
+    }
 
+    res.status(200).json({ message: "Message sent successfully" });
   } catch (error) {
     console.log("[MESSAGES_POST] ", error);
-    return res.status(500).json({message: "Internal Error"});
+    return res.status(500).json({ message: "Internal Error" });
   }
 }
