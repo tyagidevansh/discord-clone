@@ -19,6 +19,11 @@ export const NavigationItem = ({
     const pathname = usePathname();
     const router = useRouter();
 
+    // Ensure pathname is not null or undefined
+    if (!pathname) {
+        return null;
+    }
+
     // Extract the serverId from the URL
     const pathParts = pathname.split('/');
     const serverId = pathParts.includes('servers') ? pathParts[pathParts.indexOf('servers') + 1] : '';
